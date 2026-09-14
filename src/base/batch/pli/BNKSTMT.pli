@@ -32,71 +32,83 @@
   EXEC SQL INCLUDE SQLCA;
 
   /*------------------------------------------------------------*
- * HOST VARIABLE DECLARATIONS FOR CUSTOMER TABLE
- *------------------------------------------------------------*/
- DCL HV_CUST_EYECATCHER           CHAR(4);
- DCL HV_CUST_SORTCODE             CHAR(6);
- DCL HV_CUST_NUMBER               CHAR(10);
- DCL HV_CUST_TITLE                CHAR(10);
- DCL HV_CUST_FIRST_NAME           CHAR(50);
- DCL HV_CUST_LAST_NAME            CHAR(50);
- DCL HV_CUST_DOB                  FIXED BIN(31);
- DCL HV_CUST_PHONE                CHAR(20);
- DCL HV_CUST_ADDR_LINE1           CHAR(50);
- DCL HV_CUST_ADDR_LINE2           CHAR(50);
- DCL HV_CUST_CITY                 CHAR(50);
- DCL HV_CUST_POSTCODE             CHAR(10);
- DCL HV_CUST_COUNTRY              CHAR(50);
- DCL HV_CUST_STATUS               CHAR(10);
- DCL HV_CUST_CREATED_DATE         FIXED BIN(31);
- DCL HV_CUST_CREDIT_SCORE         FIXED BIN(15);
- DCL HV_CUST_CS_REVIEW_DATE       FIXED BIN(31);
+  * HOST VARIABLE DECLARATIONS FOR CUSTOMER TABLE
+  *------------------------------------------------------------*/
+  DCL
+   1 HV_CUSTOMER,
+    5 HV_CUST_EYECATCHER      CHAR(4),
+    5 HV_CUST_SORTCODE        CHAR(6),
+    5 HV_CUST_NUMBER          CHAR(10),
+    5 HV_CUST_TITLE           CHAR(10),
+    5 HV_CUST_FIRST_NAME      CHAR(50),
+    5 HV_CUST_LAST_NAME       CHAR(50),
+    5 HV_CUST_DOB             FIXED BIN(31),
+    5 HV_CUST_PHONE           CHAR(20),
+    5 HV_CUST_ADDR_LINE1      CHAR(50),
+    5 HV_CUST_ADDR_LINE2      CHAR(50),
+    5 HV_CUST_CITY            CHAR(50),
+    5 HV_CUST_POSTCODE        CHAR(10),
+    5 HV_CUST_COUNTRY         CHAR(50),
+    5 HV_CUST_STATUS          CHAR(10),
+    5 HV_CUST_CREATED_DATE    FIXED BIN(31),
+    5 HV_CUST_CREDIT_SCORE    FIXED BIN(15),
+    5 HV_CUST_CS_REVIEW_DATE  FIXED BIN(31);
 
- /* Null indicators for customer table */
- DCL HV_CUST_TITLE_NULL           FIXED BIN(15);
- DCL HV_CUST_PHONE_NULL           FIXED BIN(15);
- DCL HV_CUST_ADDR_LINE2_NULL      FIXED BIN(15);
- DCL HV_CUST_DOB_NULL             FIXED BIN(15);
- DCL HV_CUST_CREDIT_SCORE_NULL    FIXED BIN(15);
- DCL HV_CUST_CS_REVIEW_DATE_NULL  FIXED BIN(15);
+  /* Null indicators for customer table */
+  DCL
+   1 HV_CUST_NULL_IND,
+    5 HV_CUST_TITLE_NULL      FIXED BIN(15),
+    5 HV_CUST_PHONE_NULL      FIXED BIN(15),
+    5 HV_CUST_ADDR_LINE2_NULL FIXED BIN(15),
+    5 HV_CUST_DOB_NULL        FIXED BIN(15),
+    5 HV_CUST_CREDIT_SCORE_NULL FIXED BIN(15),
+    5 HV_CUST_CS_REVIEW_DATE_NULL FIXED BIN(15);
 
- /*------------------------------------------------------------*
- * HOST VARIABLE DECLARATIONS FOR ACCOUNT TABLE
- *------------------------------------------------------------*/
- DCL HV_ACCT_EYECATCHER           CHAR(4);
- DCL HV_ACCT_CUST_NUMBER          CHAR(10);
- DCL HV_ACCT_SORTCODE             CHAR(6);
- DCL HV_ACCT_NUMBER               CHAR(8);
- DCL HV_ACCT_TYPE                 CHAR(8);
- DCL HV_ACCT_INTEREST_RATE        FIXED DEC(4,2);
- DCL HV_ACCT_OPENED               CHAR(10);
- DCL HV_ACCT_OVERDRAFT_LIMIT      FIXED BIN(31);
- DCL HV_ACCT_LAST_STMT            CHAR(10);
- DCL HV_ACCT_NEXT_STMT            CHAR(10);
- DCL HV_ACCT_AVAIL_BALANCE        FIXED DEC(10,2);
- DCL HV_ACCT_ACTUAL_BALANCE       FIXED DEC(10,2);
+  /*------------------------------------------------------------*
+  * HOST VARIABLE DECLARATIONS FOR ACCOUNT TABLE
+  *------------------------------------------------------------*/
+  DCL
+   1 HV_ACCOUNT,
+    5 HV_ACCT_EYECATCHER      CHAR(4),
+    5 HV_ACCT_CUST_NUMBER     CHAR(10),
+    5 HV_ACCT_SORTCODE        CHAR(6),
+    5 HV_ACCT_NUMBER          CHAR(8),
+    5 HV_ACCT_TYPE            CHAR(8),
+    5 HV_ACCT_INTEREST_RATE   FIXED DEC(4,2),
+    5 HV_ACCT_OPENED          CHAR(10),
+    5 HV_ACCT_OVERDRAFT_LIMIT FIXED BIN(31),
+    5 HV_ACCT_LAST_STMT       CHAR(10),
+    5 HV_ACCT_NEXT_STMT       CHAR(10),
+    5 HV_ACCT_AVAIL_BALANCE   FIXED DEC(10,2),
+    5 HV_ACCT_ACTUAL_BALANCE  FIXED DEC(10,2);
 
- /* Null indicators for account table */
- DCL HV_ACCT_INTEREST_RATE_NULL   FIXED BIN(15);
- DCL HV_ACCT_OVERDRAFT_LIMIT_NULL FIXED BIN(15);
- DCL HV_ACCT_LAST_STMT_NULL       FIXED BIN(15);
- DCL HV_ACCT_NEXT_STMT_NULL       FIXED BIN(15);
+  /* Null indicators for account table */
+  DCL
+   1 HV_ACCT_NULL_IND,
+    5 HV_ACCT_INTEREST_RATE_NULL FIXED BIN(15),
+    5 HV_ACCT_OVERDRAFT_LIMIT_NULL FIXED BIN(15),
+    5 HV_ACCT_LAST_STMT_NULL FIXED BIN(15),
+    5 HV_ACCT_NEXT_STMT_NULL FIXED BIN(15);
 
- /*------------------------------------------------------------*
- * HOST VARIABLE DECLARATIONS FOR TRANSACTION TABLE
- *------------------------------------------------------------*/
- DCL HV_TRAN_EYECATCHER           CHAR(4);
- DCL HV_TRAN_SORTCODE             CHAR(6);
- DCL HV_TRAN_NUMBER               CHAR(8);
- DCL HV_TRAN_DATE                 CHAR(10);
- DCL HV_TRAN_TIME                 CHAR(6);
- DCL HV_TRAN_REF                  CHAR(12);
- DCL HV_TRAN_TYPE                 CHAR(3);
- DCL HV_TRAN_DESC                 CHAR(40);
- DCL HV_TRAN_AMOUNT               FIXED DEC(12,2);
+  /*------------------------------------------------------------*
+  * HOST VARIABLE DECLARATIONS FOR TRANSACTION TABLE
+  *------------------------------------------------------------*/
+  DCL
+   1 HV_TRANSACTION,
+    5 HV_TRAN_EYECATCHER      CHAR(4),
+    5 HV_TRAN_SORTCODE        CHAR(6),
+    5 HV_TRAN_NUMBER          CHAR(8),
+    5 HV_TRAN_DATE            CHAR(10),
+    5 HV_TRAN_TIME            CHAR(6),
+    5 HV_TRAN_REF             CHAR(12),
+    5 HV_TRAN_TYPE            CHAR(3),
+    5 HV_TRAN_DESC            CHAR(40),
+    5 HV_TRAN_AMOUNT          FIXED DEC(12,2);
 
- /* Null indicators for transaction table */
- DCL HV_TRAN_DESC_NULL            FIXED BIN(15);
+  /* Null indicators for transaction table */
+  DCL
+   1 HV_TRAN_NULL_IND,
+    5 HV_TRAN_DESC_NULL       FIXED BIN(15);
 
   /*------------------------------------------------------------*
   * WORKING VARIABLES
@@ -104,6 +116,7 @@
   DCL STMT_DATE               CHAR(10);
   DCL PERIOD_FROM             CHAR(8);
   DCL PERIOD_TO               CHAR(8);
+  DCL HV_INPUT_SORTCODE       CHAR(6);  /* Standalone predicate var for ACCT_CURSOR WHERE */
   DCL TRANS_COUNT             FIXED BIN(15) INIT(0);
   DCL TOTAL_CREDITS           FIXED DEC(12,2) INIT(0);
   DCL TOTAL_DEBITS            FIXED DEC(12,2) INIT(0);
@@ -112,7 +125,6 @@
   DCL INTEREST_EARNED         FIXED DEC(10,2) INIT(0);
   DCL FEES_CHARGED            FIXED DEC(10,2) INIT(0);
   DCL SQLCODE_SAVE            FIXED BIN(31);
-  DCL WS_SORTCODE             CHAR(6);
   DCL END_OF_DATA             BIT(1) INIT('0'B);
   DCL REPORT_LINE             CHAR(132);
   DCL LINE_COUNT              FIXED BIN(15) INIT(0);
@@ -142,7 +154,7 @@
            ACCOUNT_AVAILABLE_BALANCE,
            ACCOUNT_ACTUAL_BALANCE
     FROM ACCOUNT
-    WHERE ACCOUNT_SORTCODE = :WS_SORTCODE
+    WHERE ACCOUNT_SORTCODE = :HV_INPUT_SORTCODE
     ORDER BY ACCOUNT_NUMBER;
 
   /* Cursor to retrieve transactions for an account within period */
@@ -213,8 +225,8 @@
     ON ENDFILE(SORTCODE)
       BEGIN;
         PUT SKIP LIST('SORTCODE FILE NOT FOUND - USING DEFAULT');
-        HV_ACCT_SORTCODE = '123456';  /* Default sort code */
-        WS_SORTCODE = HV_ACCT_SORTCODE;
+        HV_INPUT_SORTCODE = '123456'; /* Default sort code */
+        HV_ACCT_SORTCODE  = HV_INPUT_SORTCODE;
         GO TO READ_DATECARD;
       END;
     
@@ -223,9 +235,9 @@
     CLOSE FILE(SORTCODE);
     
     /* Extract sort code (first 6 characters) */
-    HV_ACCT_SORTCODE = SUBSTR(SORTCODE_INPUT, 1, 6);
-    WS_SORTCODE = HV_ACCT_SORTCODE;
-    PUT SKIP LIST('SORT CODE FROM PARAMETER: ', HV_ACCT_SORTCODE);
+    HV_INPUT_SORTCODE = SUBSTR(SORTCODE_INPUT, 1, 6);
+    HV_ACCT_SORTCODE  = HV_INPUT_SORTCODE;
+    PUT SKIP LIST('SORT CODE FROM PARAMETER: ', HV_INPUT_SORTCODE);
 
   READ_DATECARD:
     /* Try to read reporting month from DATECARD */
@@ -369,20 +381,11 @@
            :HV_ACCT_AVAIL_BALANCE,
            :HV_ACCT_ACTUAL_BALANCE;
 
-    SQLCODE_SAVE = SQLCODE;
-    IF SQLCODE = 100 THEN DO;
-      PUT SKIP LIST('NO ACCOUNTS FOUND FOR SORT CODE: ',
-                    HV_ACCT_SORTCODE,
-                    ' - END OF DATA, NO ROWS RETURNED');
+    IF SQLCODE = 100 THEN
       END_OF_DATA = '1'B;
-    END;
     ELSE IF SQLCODE ^= 0 THEN DO;
       PUT SKIP LIST('ERROR FETCHING ACCOUNT - SQLCODE: ', SQLCODE);
       END_OF_DATA = '1'B;
-    END;
-    ELSE DO;
-      PUT SKIP LIST('FETCHED ACCOUNT: ', TRIM(HV_ACCT_NUMBER),
-                    ' SORTCODE: ', HV_ACCT_SORTCODE);
     END;
 
   RETURN;
