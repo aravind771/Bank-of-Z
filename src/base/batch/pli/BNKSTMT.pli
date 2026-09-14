@@ -141,7 +141,7 @@
            ACCOUNT_AVAILABLE_BALANCE,
            ACCOUNT_ACTUAL_BALANCE
     FROM ACCOUNT
-    WHERE ACCOUNT_SORTCODE = :HV_ACCT_SORTCODE
+    WHERE ACCOUNT_SORTCODE = '987654'
     ORDER BY ACCOUNT_NUMBER;
 
   /* Cursor to retrieve transactions for an account within period */
