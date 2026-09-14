@@ -112,6 +112,7 @@
   DCL INTEREST_EARNED         FIXED DEC(10,2) INIT(0);
   DCL FEES_CHARGED            FIXED DEC(10,2) INIT(0);
   DCL SQLCODE_SAVE            FIXED BIN(31);
+  DCL WS_SORTCODE             CHAR(6);
   DCL END_OF_DATA             BIT(1) INIT('0'B);
   DCL REPORT_LINE             CHAR(132);
   DCL LINE_COUNT              FIXED BIN(15) INIT(0);
@@ -141,7 +142,7 @@
            ACCOUNT_AVAILABLE_BALANCE,
            ACCOUNT_ACTUAL_BALANCE
     FROM ACCOUNT
-    WHERE ACCOUNT_SORTCODE = '987654'
+    WHERE ACCOUNT_SORTCODE = :WS_SORTCODE
     ORDER BY ACCOUNT_NUMBER;
 
   /* Cursor to retrieve transactions for an account within period */
@@ -213,6 +214,7 @@
       BEGIN;
         PUT SKIP LIST('SORTCODE FILE NOT FOUND - USING DEFAULT');
         HV_ACCT_SORTCODE = '123456';  /* Default sort code */
+        WS_SORTCODE = HV_ACCT_SORTCODE;
         GO TO READ_DATECARD;
       END;
     
@@ -222,6 +224,7 @@
     
     /* Extract sort code (first 6 characters) */
     HV_ACCT_SORTCODE = SUBSTR(SORTCODE_INPUT, 1, 6);
+    WS_SORTCODE = HV_ACCT_SORTCODE;
     PUT SKIP LIST('SORT CODE FROM PARAMETER: ', HV_ACCT_SORTCODE);
 
   READ_DATECARD:
