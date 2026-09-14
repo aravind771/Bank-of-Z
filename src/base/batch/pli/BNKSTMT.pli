@@ -116,7 +116,8 @@
   DCL STMT_DATE               CHAR(10);
   DCL PERIOD_FROM             CHAR(8);
   DCL PERIOD_TO               CHAR(8);
-  DCL HV_INPUT_SORTCODE       CHAR(6);  /* Standalone predicate var for ACCT_CURSOR WHERE */
+  /* Standalone predicate var for ACCT_CURSOR WHERE clause */
+  DCL HV_INPUT_SORTCODE       CHAR(6);
   DCL TRANS_COUNT             FIXED BIN(15) INIT(0);
   DCL TOTAL_CREDITS           FIXED DEC(12,2) INIT(0);
   DCL TOTAL_DEBITS            FIXED DEC(12,2) INIT(0);
