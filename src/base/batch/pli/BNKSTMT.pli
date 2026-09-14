@@ -381,7 +381,7 @@
     SQLCODE_SAVE = SQLCODE;
     IF SQLCODE = 100 THEN DO;
       PUT SKIP LIST('NO ACCOUNTS FOUND FOR SORT CODE: ', HV_ACCT_SORTCODE,
-                    ' (SQLCODE=100 - NO ROWS)');
+                    ' (END OF DATA - NO ROWS RETURNED)');
       END_OF_DATA = '1'B;
     END;
     ELSE IF SQLCODE ^= 0 THEN DO;
