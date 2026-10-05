@@ -125,9 +125,10 @@ main() {
         /Address:/ && intf { print $2; exit }
       ')
     echo ""
-    print_info "The Bank of Z interface is available at:"
-    print_info "- https://${ipaddr}:${FRONTEND_HTTPS_PORT}/"
-    print_info "(Please allow about 20s for the interface to become available)"
+    # SKIPPED: Frontend Liberty server disabled — interface URL not available
+    # print_info "The Bank of Z interface is available at:"
+    # print_info "- https://${ipaddr}:${FRONTEND_HTTPS_PORT}/"
+    # print_info "(Please allow about 20s for the interface to become available)"
     echo ""
 }
 

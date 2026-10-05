@@ -45,10 +45,10 @@ lifecycles:
       - MetadataInit
       - FullAnalysis
       - Languages    # Defined in Languages.yaml
-      - VanillaFrontend
-      - ServerXmlPackager
+      #- VanillaFrontend   # SKIPPED: Frontend Liberty disabled
+      #- ServerXmlPackager # SKIPPED: zOS Connect disabled
       - ImsJavaBuilder
-      - zOSConnect
+      #- zOSConnect        # SKIPPED: zOS Connect disabled
       - Package
       - Finish
 
@@ -80,10 +80,10 @@ lifecycles:
       - MetadataInit
       - ImpactAnalysis
       - Languages    # Defined in Languages.yaml
-      - VanillaFrontend
-      - ServerXmlPackager
+      #- VanillaFrontend   # SKIPPED: Frontend Liberty disabled
+      #- ServerXmlPackager # SKIPPED: zOS Connect disabled
       - ImsJavaBuilder
-      - zOSConnect
+      #- zOSConnect        # SKIPPED: zOS Connect disabled
       - Package
       - Finish
 
@@ -108,10 +108,10 @@ lifecycles:
       - MetadataInit
       - ImpactAnalysis
       - Languages    # Defined in Languages.yaml
-      - VanillaFrontend
-      - ServerXmlPackager
+      #- VanillaFrontend   # SKIPPED: Frontend Liberty disabled
+      #- ServerXmlPackager # SKIPPED: zOS Connect disabled
       - ImsJavaBuilder
-      - zOSConnect
+      #- zOSConnect        # SKIPPED: zOS Connect disabled
       - Package
       - Finish
 

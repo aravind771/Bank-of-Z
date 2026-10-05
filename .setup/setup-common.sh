@@ -63,10 +63,10 @@ stage_stop_tasks() {
     opercmd "C CICS${APP_SHORT_NAME}"  2>/dev/null
     
     # =========================
-    # Stop IBM zconn servers
+    # Stop IBM zconn servers  # SKIPPED: zOS Connect and Frontend Liberty disabled
     # =========================
-    jcan P "BAQ${APP_SHORT_NAME}"  2>/dev/null
-    jcan P "FE${APP_SHORT_NAME}"  2>/dev/null
+    # jcan P "BAQ${APP_SHORT_NAME}"  2>/dev/null
+    # jcan P "FE${APP_SHORT_NAME}"  2>/dev/null
     
     # =========================
     # Stop IMS1
@@ -81,9 +81,9 @@ stage_stop_tasks() {
     drm "${APP_HLQ}.*" 2>/dev/null
     dtouch "${APP_HLQ}.PROCLIB" 2> /dev/null
     rm -rf "${SANDBOX_DIR}/CICS${APP_SHORT_NAME}" 2>/dev/null
-    rm -rf "${SANDBOX_DIR}/frontend" 2>/dev/null
+    # rm -rf "${SANDBOX_DIR}/frontend" 2>/dev/null          # SKIPPED: Frontend Liberty disabled
     rm -rf "${SANDBOX_DIR}/jars" 2>/dev/null
-    rm -rf "${SANDBOX_DIR}/zosconnect-server" 2>/dev/null
+    # rm -rf "${SANDBOX_DIR}/zosconnect-server" 2>/dev/null # SKIPPED: zOS Connect disabled
     rm -rf "${SANDBOX_DIR}/logs" 2>/dev/null
     set -e
 }
@@ -574,8 +574,8 @@ main_setup() {
         stage_setup_certificates
     fi
 
-    stage_setup_zosconnect_server
-    stage_setup_frontend_server
+    # stage_setup_zosconnect_server  # SKIPPED: zOS Connect setup disabled
+    # stage_setup_frontend_server    # SKIPPED: Frontend Liberty server setup disabled
 
     # Summary
     print_stage "SETUP COMPLETE"
@@ -671,21 +671,21 @@ main() {
             main_setup
             ;;
         install-bank-of-z)
-            # Extract z/OS Connect Gradle dependencies into $SANDBOX_DIR/gradleLibs
-            GRADLE_LIBS_DIR="${SANDBOX_DIR}/gradleLibs"
-            DEPS_ZIP="${ZOSCONNECT_HOME}/dependencies.zip"
-            if [ -d "$GRADLE_LIBS_DIR" ]; then
-                print_info "Removing existing gradleLibs at $GRADLE_LIBS_DIR..."
-                rm -rf "$GRADLE_LIBS_DIR"
-            fi
-            if [ ! -f "$DEPS_ZIP" ]; then
-                print_error "dependencies.zip not found at $DEPS_ZIP"
-                print_error "Ensure z/OS Connect is installed at $ZOSCONNECT_HOME"
-                exit 1
-            fi
-            print_info "Extracting z/OS Connect Gradle dependencies to $SANDBOX_DIR..."
-            cd "$SANDBOX_DIR" && jar xf "$DEPS_ZIP" && cd -
-            print_success "Gradle dependencies extracted to $GRADLE_LIBS_DIR"
+            # SKIPPED: z/OS Connect Gradle dependencies extraction disabled
+            # GRADLE_LIBS_DIR="${SANDBOX_DIR}/gradleLibs"
+            # DEPS_ZIP="${ZOSCONNECT_HOME}/dependencies.zip"
+            # if [ -d "$GRADLE_LIBS_DIR" ]; then
+            #     print_info "Removing existing gradleLibs at $GRADLE_LIBS_DIR..."
+            #     rm -rf "$GRADLE_LIBS_DIR"
+            # fi
+            # if [ ! -f "$DEPS_ZIP" ]; then
+            #     print_error "dependencies.zip not found at $DEPS_ZIP"
+            #     print_error "Ensure z/OS Connect is installed at $ZOSCONNECT_HOME"
+            #     exit 1
+            # fi
+            # print_info "Extracting z/OS Connect Gradle dependencies to $SANDBOX_DIR..."
+            # cd "$SANDBOX_DIR" && jar xf "$DEPS_ZIP" && cd -
+            # print_success "Gradle dependencies extracted to $GRADLE_LIBS_DIR"
 
             if ${SCRIPTS_DIR}/pipeline-common.sh build-and-deploy full; then
                 print_success "Remote pipeline completed successfully"
@@ -698,20 +698,20 @@ main() {
                 stage_populate_ims_database
             fi
             
-            # Restart frontend and z/OS Connect servers (dropinsEnabled="false")
-            opercmd "C FE${APP_SHORT_NAME}" 2>/dev/null || true
-            opercmd "C BAQ${APP_SHORT_NAME}" 2>/dev/null || true
-            sleep 5
-            if [[ "$FRONTEND_SYS_PROCLIB" != "${APP_HLQ}.PROCLIB" ]]; then
-                opercmd "S FE${APP_SHORT_NAME}" 2>/dev/null || true
-            else
-                jsub "${FRONTEND_SYS_PROCLIB}(FE${APP_SHORT_NAME}J)" 2>/dev/null || true
-            fi
-            if [[ "$ZOSCONNECT_SYS_PROCLIB" != "${APP_HLQ}.PROCLIB" ]]; then
-                opercmd "S BAQ${APP_SHORT_NAME}" 2>/dev/null || true
-            else
-                jsub "${ZOSCONNECT_SYS_PROCLIB}(BAQ${APP_SHORT_NAME}J)"  2>/dev/null || true
-            fi
+            # SKIPPED: Restart of frontend and z/OS Connect servers disabled
+            # opercmd "C FE${APP_SHORT_NAME}" 2>/dev/null || true
+            # opercmd "C BAQ${APP_SHORT_NAME}" 2>/dev/null || true
+            # sleep 5
+            # if [[ "$FRONTEND_SYS_PROCLIB" != "${APP_HLQ}.PROCLIB" ]]; then
+            #     opercmd "S FE${APP_SHORT_NAME}" 2>/dev/null || true
+            # else
+            #     jsub "${FRONTEND_SYS_PROCLIB}(FE${APP_SHORT_NAME}J)" 2>/dev/null || true
+            # fi
+            # if [[ "$ZOSCONNECT_SYS_PROCLIB" != "${APP_HLQ}.PROCLIB" ]]; then
+            #     opercmd "S BAQ${APP_SHORT_NAME}" 2>/dev/null || true
+            # else
+            #     jsub "${ZOSCONNECT_SYS_PROCLIB}(BAQ${APP_SHORT_NAME}J)"  2>/dev/null || true
+            # fi
             ;;
         verify-installation)
             main_verify_installation

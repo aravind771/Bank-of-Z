@@ -62,6 +62,7 @@ cics_region:
     gmtran: CESL
     sec: "{{ vars.cics_sec }}"
     db2conn: "YES"
+    securetcpip: "NO"
     ussconfig: "{{ vars.region_uss_dir }}/{{ vars.applid }}/config"
     resoverrides: resourceOverrides.cicsoverrides.yaml
     xtran: "NO"

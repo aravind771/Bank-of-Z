@@ -198,6 +198,9 @@ if [[ "$IMS_DISABLED" == "true" ]]; then
  CMD="$CMD -pst ims"
 fi
 
+# SKIPPED: zOS Connect and Frontend Liberty deploy steps disabled
+CMD="$CMD -pst zosconnect_copy -pst zosconnect_config -pst zosconnect_refresh -pst frontend_refresh"
+
 rm -f message.log
 
 print_info "Executing command:"
