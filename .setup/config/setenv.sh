@@ -73,7 +73,7 @@ PYTHON_HOME=$(get_section_value 'python' 'python_home')
 DBB_REPO_URL=$(get_section_value 'repositories' 'dbb_url')
 
 # ZOAU
-ZOAU_HOME="${ZOAU_HOME:-$(get_section_value 'zoau' 'zoau_home')}"
+ZOAU_HOME=$(get_section_value 'zoau' 'zoau_home')
 
 # ZBuilder
 ZBUILDER_SOURCE=$(get_section_value 'zbuilder' 'source_dir')

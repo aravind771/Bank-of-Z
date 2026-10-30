@@ -10,5 +10,7 @@
     },
     "zopeneditor.zowe": {
         "defaultCliProfile": "bank-of-z.rse"
-    }
+    },
+    "bob-z-extension.welcomePage.show": false,
+    "zopendebug.profileView.showWelcome": false
 }

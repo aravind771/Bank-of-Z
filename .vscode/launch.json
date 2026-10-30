@@ -22,5 +22,14 @@
         "name": "bank-of-z.zOpenDebug",
       }
     },
+    {
+      "type": "zOpenDebug",
+      "request": "launch",
+      "name": "Z Open Debug: dallas - CICSBOZ ODAC",
+      "connection": {
+        "type": "zowe",
+        "name": "dallas.zOpenDebug"
+      }
+    },
   ]
 }

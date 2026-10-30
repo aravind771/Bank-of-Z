@@ -260,30 +260,72 @@ print_success "RACF access granted for OCR1-OCR5 to CICSUSER"
 # zconfig creates the CICS PROC in VENDOR.PROCLIB; we just need
 # the DASD-only log streams that CICS requires before starting.
 # =========================
-print_stage "Stage 8: Define MVS log streams"
-rm -f "/tmp/LOGSTREAM-$$.jcl"
-cat > "/tmp/LOGSTREAM-$$.jcl" <<LOGEOF
-//DEFLOGS  JOB CLASS=A,MSGCLASS=H,NOTIFY=&SYSUID
-//STEP1    EXEC PGM=IXCMIAPU
-//SYSPRINT DD SYSOUT=*
-//SYSIN    DD *
-  DATA TYPE(LOGR) REPORT(NO)
-  DEFINE LOGSTREAM NAME(STCOPER.CICS${APP_SHORT_NAME}.DFHLOG)
-         DASDONLY(YES)
-         MAXBUFSIZE(4096)
-  DEFINE LOGSTREAM NAME(STCOPER.CICS${APP_SHORT_NAME}.DFHSHUNT)
-         DASDONLY(YES)
-         MAXBUFSIZE(4096)
-/*
-LOGEOF
+print_stage "Stage 7: Define MVS log streams"
+LOGSTREAMS=(
+    "STCOPER.CICS${APP_SHORT_NAME}.DFHLOG"
+    "STCOPER.CICS${APP_SHORT_NAME}.DFHSHUNT"
+    "IBMUSER.CICS${APP_SHORT_NAME}.DFHLOG"
+    "IBMUSER.CICS${APP_SHORT_NAME}.DFHSHUNT"
+)
 
-a2e -f ISO8859-1 -t IBM-1047 "/tmp/LOGSTREAM-$$.jcl"
-set +e
-jsub "/tmp/LOGSTREAM-$$.jcl" 2>/dev/null
-sleep 5
-set -e
-rm -f "/tmp/LOGSTREAM-$$.jcl"
-print_info "Log streams defined (or already exist - OK)"
+# Returns 0 if the log stream is defined to the system logger
+logstream_exists() {
+    local ls_name="$1" out
+    out=$(opercmd "D LOGGER,L,LSN=${ls_name}" 2>/dev/null) || true
+    # Match the inventory row for the log stream, ignoring any echo of the command itself
+    echo "$out" | grep -v "LSN=" | grep -Eq "(^|[[:space:]])${ls_name}([[:space:]]|$)"
+}
+
+MISSING_LOGSTREAMS=()
+for LS in "${LOGSTREAMS[@]}"; do
+    if logstream_exists "$LS"; then
+        print_info "Log stream $LS is available"
+    else
+        print_info "Log stream $LS is NOT available"
+        MISSING_LOGSTREAMS+=("$LS")
+    fi
+done
+
+if [ ${#MISSING_LOGSTREAMS[@]} -eq 0 ]; then
+    print_success "All log streams are available - nothing to define"
+else
+    rm -f "/tmp/LOGSTREAM-$$.jcl"
+    {
+        echo "//DEFLOGS  JOB CLASS=A,MSGCLASS=H,NOTIFY=&SYSUID"
+        echo "//STEP1    EXEC PGM=IXCMIAPU"
+        echo "//SYSPRINT DD SYSOUT=*"
+        echo "//SYSIN    DD *"
+        echo "  DATA TYPE(LOGR) REPORT(NO)"
+        for LS in "${MISSING_LOGSTREAMS[@]}"; do
+            echo "  DEFINE LOGSTREAM NAME(${LS})"
+            echo "         DASDONLY(YES)"
+            echo "         MAXBUFSIZE(4096)"
+        done
+        echo "/*"
+    } > "/tmp/LOGSTREAM-$$.jcl"
+
+    a2e -f ISO8859-1 -t IBM-1047 "/tmp/LOGSTREAM-$$.jcl"
+    print_info "Defining log streams: ${MISSING_LOGSTREAMS[*]}"
+    # run_job_and_wait exits the script (set -e) on failure and leaves the job's
+    # condition code in $RC; require a clean CC=0000 from IXCMIAPU.
+    run_job_and_wait "/tmp/LOGSTREAM-$$.jcl"
+    rm -f "/tmp/LOGSTREAM-$$.jcl"
+    if [ "$RC" != "0000" ]; then
+        print_error "Log stream define job ended with CC=$RC (expected 0000)"
+        exit 8
+    fi
+    print_success "Log stream define job completed with CC=$RC"
+
+    # Confirm the log streams now exist
+    for LS in "${MISSING_LOGSTREAMS[@]}"; do
+        if logstream_exists "$LS"; then
+            print_success "Log stream $LS defined"
+        else
+            print_error "Log stream $LS still not available after define job"
+            exit 8
+        fi
+    done
+fi
 
 # =========================
 # # Stage 8: Start CICS region
