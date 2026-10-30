@@ -272,8 +272,8 @@ LOGSTREAMS=(
 logstream_exists() {
     local ls_name="$1" out
     out=$(opercmd "D LOGGER,L,LSN=${ls_name}" 2>/dev/null) || true
-    # Match the inventory row for the log stream, ignoring any echo of the command itself
-    echo "$out" | grep -v "LSN=" | grep -Eq "(^|[[:space:]])${ls_name}([[:space:]]|$)"
+    # The IXG601I inventory row starts with the log stream name as its first column
+    echo "$out" | awk -v n="$ls_name" '$1 == n { found=1 } END { exit !found }'
 }
 
 MISSING_LOGSTREAMS=()
